@@ -1,0 +1,6 @@
+clone.out
+clone.err
+src/out
+src/composer.lock
+src/vendor
+allext

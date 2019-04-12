@@ -1,0 +1,15 @@
+{
+    "name": "bawolff/extjsonuploader",
+    "description": "Upload extension.json to mw.org",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Brian Wolff",
+            "email": "bawolff@gmail.com"
+        }
+    ],
+    "require": {
+"hamstar/Wikimate": "0.12.0",
+        "wikimedia/utfnormal": "^2.0"
+    }
+}
