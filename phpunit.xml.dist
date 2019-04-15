@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	bootstrap="./vendor/autoload.php"
+	colors="true"
+	forceCoversAnnotation="false"
+	verbose="true"
+>
+	<testsuites>
+		<testsuite name="extjsonuploader">
+			<directory suffix="Test.php">tests/phpunit</directory>
+		</testsuite>
+	</testsuites>
+
+	<!-- Ignore vendor folder for code coverage -->
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">./src</directory>
+		</whitelist>
+	</filter>
+</phpunit>

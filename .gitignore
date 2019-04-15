@@ -1,6 +1,9 @@
+composer.lock
+vendor/
+.phpunit.result.cache
+
+config.php
 clone.out
 clone.err
-src/out
-src/composer.lock
-src/vendor
+out/
 allext

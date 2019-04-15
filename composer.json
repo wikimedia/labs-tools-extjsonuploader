@@ -1,0 +1,45 @@
+{
+	"name": "bawolff/extjsonuploader",
+	"description": "Tool for uploading extension data to mediawiki.org",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Brian Wolff",
+			"email": "bawolff@gmail.com"
+		}
+	],
+	"support": {
+		"source": "https://gerrit.wikimedia.org/g/labs/tools/extjsonuploader/",
+		"issues": "https://phabricator.wikimedia.org/tag/tool-extjsonuploader/",
+		"docs": "https://wikitech.wikimedia.org/wiki/Tool:Extjsonuploader"
+	},
+	"autoload": {
+		"psr-4": {
+			"MediaWiki\\Tools\\ExtensionJsonUploader\\": "src/"
+		}
+	},
+	"require": {
+		"php": ">=5.6.99",
+		"ext-json": "*",
+		"psr/log": "1.*",
+		"hamstar/wikimate": "0.12.0",
+		"wikimedia/utfnormal": "^2.0"
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "1.*",
+		"jakub-onderka/php-console-highlighter": "0.4.*",
+		"mediawiki/minus-x": "0.3.*",
+		"phpunit/phpunit": "8.*",
+		"wikimedia/testing-access-wrapper": "1.*"
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"minus-x check .",
+			"phpunit"
+		],
+		"fix": [
+			"minus-x fix ."
+		]
+	}
+}
