@@ -13,7 +13,10 @@ function doStuff() {
 	$wiki->login( 'Bawolff_bot', $password );
 
 	$page = $wiki->getPage( 'Module:ExtensionJson' );
-	$page->setText( $lua, null, false, 'Resyncing with extension.json from git' );
+	$res = $page->setText( $lua, null, false, 'Resyncing with extension.json from git' );
+	if ( !$res ) {
+		var_dump( $page->getError() );
+	}
 }
 
 doStuff();

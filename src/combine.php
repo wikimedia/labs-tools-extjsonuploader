@@ -11,6 +11,10 @@ function getAllExtJson() {
 			continue;
 		}
 
+		// Keep size down. 2mb limit in mediawiki
+		unset( $ext[ 'ResourceModules' ] );
+		unset( $ext[ 'AutoloadClasses' ] );
+
 		$name = getName( $ext );
 		if ( !$name ) {
 			debug( "$file has no name" );
