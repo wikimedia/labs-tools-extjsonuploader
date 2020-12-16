@@ -41,6 +41,10 @@ class JsonCollector implements LoggerAwareInterface {
 				continue;
 			}
 
+			// Keep size down under the 2MB limit of mediawiki.org
+			unset( $ext['ResourceModules'] );
+			unset( $ext['AutoloadClasses'] );
+
 			$name = $this->getName( $ext );
 			if ( !$name ) {
 				$this->logger->error( "$file has no name" );
