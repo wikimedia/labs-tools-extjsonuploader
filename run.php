@@ -6,7 +6,7 @@ require __DIR__ . '/vendor/autoload.php';
 $config = require __DIR__ . '/config.php';
 
 $app = new MediaWiki\Tools\ExtensionJsonUploader\App(
-	$config['extensionDir'],
+	$config['extensionDirs'],
 	$config['username'],
 	$config['password']
 );
