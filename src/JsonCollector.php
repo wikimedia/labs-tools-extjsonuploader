@@ -34,9 +34,9 @@ class JsonCollector implements LoggerAwareInterface {
 		$files = glob( $this->extensionsPath . '/*/extension.json' );
 
 		$overall = [];
-		foreach( $files as $file ) {
+		foreach ( $files as $file ) {
 			$filetext = file_get_contents( $file );
-			$ext = json_decode( $filetext, true /*assoc*/ );
+			$ext = json_decode( $filetext, true );
 			if ( !$ext ) {
 				continue;
 			}
@@ -62,7 +62,8 @@ class JsonCollector implements LoggerAwareInterface {
 	 */
 	protected function getName( array $json ) {
 		$m = [];
-		if ( isset( $json['url'] ) && preg_match( '!^https?://www.mediawiki.org/wiki/Extension:([^?#]*)$!i', $json['url'], $m ) ) {
+		$pattern = '!^https?://www.mediawiki.org/wiki/Extension:([^?#]*)$!i';
+		if ( isset( $json['url'] ) && preg_match( $pattern, $json['url'], $m ) ) {
 			return urldecode( $m[1] );
 		} elseif ( isset( $json['name'] ) && is_string( $json['name'] ) ) {
 			return $json['name'];

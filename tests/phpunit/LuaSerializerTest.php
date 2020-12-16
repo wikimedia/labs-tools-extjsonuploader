@@ -35,7 +35,7 @@ class LuaSerializerTest extends TestCase {
 			[ false, 'false' ],
 			[ null, 'nil' ],
 			[ [ 'a' => 'b' ], "{\n\t[\"a\"] = \"b\",\n}" ],
-			[ [ 'a' => 'b', 'c' => [ 'd' => 0 ] ], "{\n\t[\"a\"] = \"b\",\n\t[\"c\"] = {\n\t\t[\"d\"] = 0,\n\t},\n}"],
+			[ [ 'a' => 'b', 'c' => [ 'd' => 0 ] ], "{\n\t[\"a\"] = \"b\",\n\t[\"c\"] = {\n\t\t[\"d\"] = 0,\n\t},\n}" ],
 		];
 	}
 

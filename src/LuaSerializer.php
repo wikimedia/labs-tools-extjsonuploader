@@ -44,13 +44,13 @@ class LuaSerializer implements LoggerAwareInterface {
 		if ( is_bool( $stuff ) ) {
 			return $stuff ? 'true' : 'false';
 		}
-		if ( is_null( $stuff ) ) {
+		if ( $stuff === null ) {
 			return 'nil';
 		}
 
 		if ( is_array( $stuff ) ) {
 			$out = "{\n";
-			foreach( $stuff as $key => $value ) {
+			foreach ( $stuff as $key => $value ) {
 				$out .= str_repeat( "\t", $level );
 				$out .= '[' . $this->convertToLua( $key ) . '] = ' . $this->convertToLua( $value, $level + 1 ) . ",\n";
 			}

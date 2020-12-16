@@ -27,6 +27,11 @@ class App implements LoggerAwareInterface {
 	/** @var string Bot password */
 	private $wikiPass;
 
+	/**
+	 * @param string $extensionDir
+	 * @param string $wikiUser
+	 * @param string $wikiPass
+	 */
 	public function __construct( $extensionDir, $wikiUser, $wikiPass ) {
 		$this->extensionDir = $extensionDir;
 		$this->wikiUser = $wikiUser;
@@ -34,6 +39,9 @@ class App implements LoggerAwareInterface {
 		$this->logger = new NullLogger();
 	}
 
+	/**
+	 * @param string $url
+	 */
 	public function setApiUrl( $url ) {
 		$this->apiUrl = $url;
 	}
