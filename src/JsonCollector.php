@@ -13,15 +13,15 @@ class JsonCollector implements LoggerAwareInterface {
 
 	use LoggerAwareTrait;
 
-	/** @var string */
-	protected $extensionsPath;
+	/** @var string[] */
+	protected $extensionsDirs;
 
 	/**
-	 * @param string $extensionsPath Path to extensions directory (e.g. checkout of
-	 *   git clone https://gerrit.wikimedia.org/r/mediawiki/extensions )
+	 * @param string[] $extensionsDirs List of extensions directories
+	 *   (e.g. clone of https://gerrit.wikimedia.org/r/mediawiki/extensions )
 	 */
-	public function __construct( $extensionsPath ) {
-		$this->extensionsPath = rtrim( $extensionsPath, '/' );
+	public function __construct( $extensionsDirs ) {
+		$this->extensionsDirs = $extensionsDirs;
 		$this->logger = new NullLogger();
 	}
 
@@ -31,10 +31,8 @@ class JsonCollector implements LoggerAwareInterface {
 	 * @return array
 	 */
 	public function collect() {
-		$files = glob( $this->extensionsPath . '/*/extension.json' );
-
 		$overall = [];
-		foreach ( $files as $file ) {
+		foreach ( $this->getFiles() as $file ) {
 			$filetext = file_get_contents( $file );
 			$ext = json_decode( $filetext, true );
 			if ( !$ext ) {
@@ -56,6 +54,19 @@ class JsonCollector implements LoggerAwareInterface {
 			$overall[$name] = $ext;
 		}
 		return $overall;
+	}
+
+	/**
+	 * Iterate through extension directories and list the files.
+	 * @return Generator<string>
+	 */
+	protected function getFiles() {
+		foreach ( $this->extensionsDirs as $dir ) {
+			$dir = rtrim( $dir, '/' );
+			foreach ( glob( $dir . '/*/extension.json' ) as $file ) {
+				yield $file;
+			}
+		}
 	}
 
 	/**

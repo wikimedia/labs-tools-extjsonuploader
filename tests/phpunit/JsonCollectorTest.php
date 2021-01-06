@@ -10,7 +10,7 @@ class JsonCollectorTest extends TestCase {
 	 * @covers \MediaWiki\Tools\ExtensionJsonUploader\JsonCollector::collect
 	 */
 	public function testCollect() {
-		$collector = new JsonCollector( __DIR__ . '/../fixtures/extensions' );
+		$collector = new JsonCollector( [ __DIR__ . '/../fixtures/extensions' ] );
 		$data = $collector->collect();
 		$this->assertIsArray( $data );
 		$this->assertCount( 2, $data );

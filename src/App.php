@@ -15,8 +15,8 @@ class App implements LoggerAwareInterface {
 
 	use LoggerAwareTrait;
 
-	/** @var string Directory where the mediawiki/extensions repo is checked out */
-	private $extensionDir;
+	/** @var string[] Directory where the mediawiki/extensions repo is checked out */
+	private $extensionDirs;
 
 	/** @var string MediaWiki API URL */
 	private $apiUrl = 'https://www.mediawiki.org/w/api.php';
@@ -28,12 +28,12 @@ class App implements LoggerAwareInterface {
 	private $wikiPass;
 
 	/**
-	 * @param string $extensionDir
+	 * @param string[] $extensionDirs
 	 * @param string $wikiUser
 	 * @param string $wikiPass
 	 */
-	public function __construct( $extensionDir, $wikiUser, $wikiPass ) {
-		$this->extensionDir = $extensionDir;
+	public function __construct( array $extensionDirs, $wikiUser, $wikiPass ) {
+		$this->extensionDirs = $extensionDirs;
 		$this->wikiUser = $wikiUser;
 		$this->wikiPass = $wikiPass;
 		$this->logger = new NullLogger();
@@ -47,7 +47,7 @@ class App implements LoggerAwareInterface {
 	}
 
 	public function run() {
-		$collector = new JsonCollector( $this->extensionDir );
+		$collector = new JsonCollector( $this->extensionDirs );
 		$serializer = new LuaSerializer();
 		$collector->setLogger( $this->logger );
 		$serializer->setLogger( $this->logger );
