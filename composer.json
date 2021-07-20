@@ -22,7 +22,7 @@
 		"php": ">=5.6.99",
 		"ext-json": "*",
 		"psr/log": "1.*",
-		"hamstar/wikimate": "0.12.0",
+		"hamstar/wikimate": "0.13.0",
 		"wikimedia/utfnormal": "^2.0"
 	},
 	"require-dev": {
