@@ -7,3 +7,6 @@ clone.out
 clone.err
 out/
 allext
+
+public_html/ExtensionJson.json
+

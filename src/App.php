@@ -48,12 +48,19 @@ class App implements LoggerAwareInterface {
 
 	public function run() {
 		$collector = new JsonCollector( $this->extensionDirs );
-		$serializer = new LuaSerializer();
+		$luaSerializer = new LuaSerializer();
+		$jsonSerializer = new JsonSerializer();
 		$collector->setLogger( $this->logger );
-		$serializer->setLogger( $this->logger );
+		$luaSerializer->setLogger( $this->logger );
+		$jsonSerializer->setLogger( $this->logger );
 
 		$data = $collector->collect();
-		$lua = $serializer->serialize( $data );
+
+		// Save JSON to public_html.
+		$jsonSerializer->serialize( $data, __DIR__ . '/../public_html/ExtensionJson.json' );
+
+		// Create Lua.
+		$lua = $luaSerializer->serialize( $data );
 		$lua = Validator::cleanUp( $lua );
 
 		$wiki = new Wikimate( $this->apiUrl );
