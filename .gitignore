@@ -9,4 +9,4 @@ out/
 allext
 
 public_html/ExtensionJson.json
-
+tests/phpunit/test.json
