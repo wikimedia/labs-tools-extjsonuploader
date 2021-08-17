@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use MediaWiki\Tools\ExtensionJsonUploader\Command\UpdateCommand;
+use MediaWiki\Tools\ExtensionJsonUploader\Command\UploadCommand;
+use Symfony\Component\Console\Application;
+
+if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+	echo 'Warning: This command should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+}
+
+set_time_limit(0);
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+$application = new Application();
+$application->add(new UpdateCommand());
+$application->add(new UploadCommand());
+$application->run();
