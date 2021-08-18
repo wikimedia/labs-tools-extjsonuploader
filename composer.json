@@ -18,22 +18,26 @@
 			"MediaWiki\\Tools\\ExtensionJsonUploader\\": "src/"
 		}
 	},
+	"config": {
+		"platform": {
+			"php": "7.2.9"
+		}
+	},
 	"require": {
-		"php": ">=5.6.99",
 		"ext-json": "*",
 		"psr/log": "1.*",
 		"hamstar/wikimate": "0.13.0",
 		"symfony/console": "^5.3",
-		"wikimedia/utfnormal": "^2.0",
+		"wikimedia/utfnormal": "^3.0",
 		"symfony/process": "^5.3"
 	},
 	"require-dev": {
-		"jakub-onderka/php-parallel-lint": "1.*",
-		"jakub-onderka/php-console-highlighter": "0.4.*",
-		"mediawiki/mediawiki-codesniffer": "^34.0",
-		"mediawiki/minus-x": "^1.1",
-		"phpunit/phpunit": "8.*",
-		"wikimedia/testing-access-wrapper": "1.*"
+		"php-parallel-lint/php-parallel-lint": "^1.0",
+		"php-parallel-lint/php-console-highlighter": "^0.5",
+		"mediawiki/mediawiki-codesniffer": "^37.0",
+		"mediawiki/minus-x": "^1.0",
+		"phpunit/phpunit": "^8.0",
+		"wikimedia/testing-access-wrapper": "^2.0"
 	},
 	"scripts": {
 		"test": [
