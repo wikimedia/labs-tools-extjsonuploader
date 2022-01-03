@@ -5,6 +5,7 @@ namespace MediaWiki\Tools\ExtensionJsonUploader;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Component\Process\Process;
 
 /**
  * Collect all extension.json data into an array.
@@ -43,6 +44,22 @@ class JsonCollector implements LoggerAwareInterface {
 			unset( $ext['ResourceModules'] );
 			unset( $ext['AutoloadClasses'] );
 
+			// Add Git repository URL from Composer or the Git remote definition.
+			$composerJson = dirname( $file ) . '/composer.json';
+			if ( file_exists( $composerJson ) ) {
+				$composerContents = file_get_contents( $composerJson );
+				$composer = json_decode( $composerContents, true );
+				if ( isset( $composer['support']['source'] ) ) {
+					$ext['repository'] = $composer['support']['source'];
+				}
+			}
+			if ( !isset( $ext['repository'] ) ) {
+				$remoteUrl = $this->getRemoteUrl( $file );
+				if ( $remoteUrl ) {
+					$ext['repository'] = $remoteUrl;
+				}
+			}
+
 			$name = $this->getName( $ext );
 			if ( !$name ) {
 				$this->logger->error( "$file has no name" );
@@ -54,6 +71,19 @@ class JsonCollector implements LoggerAwareInterface {
 			$overall[$name] = $ext;
 		}
 		return $overall;
+	}
+
+	/**
+	 * Get the URL of the Git 'origin' repository, from an extension.json filename.
+	 * @param string $file The filesystem path to the extension.json file.
+	 * @return string|null
+	 */
+	private function getRemoteUrl( string $file ): ?string {
+		$process = new Process( [ 'git', 'remote', 'get-url', 'origin' ] );
+		$process->setWorkingDirectory( dirname( $file ) );
+		$process->setTimeout( null );
+		$process->run();
+		return trim( $process->getOutput() ) ?: null;
 	}
 
 	/**
