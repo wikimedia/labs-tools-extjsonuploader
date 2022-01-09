@@ -41,8 +41,13 @@ class JsonCollector implements LoggerAwareInterface {
 			}
 
 			// Keep size down under the 2MB limit of mediawiki.org
-			unset( $ext['ResourceModules'] );
-			unset( $ext['AutoloadClasses'] );
+			unset(
+				$ext['AutoloadClasses'],
+				$ext['AutoloadNamespaces'],
+				$ext['MessagesDirs'],
+				$ext['ResourceFileModulePaths'],
+				$ext['ResourceModules']
+			);
 
 			// Add Git repository URL from Composer or the Git remote definition.
 			$composerJson = dirname( $file ) . '/composer.json';
