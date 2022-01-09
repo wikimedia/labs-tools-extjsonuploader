@@ -46,15 +46,23 @@ class App implements LoggerAwareInterface {
 		$this->apiUrl = $url;
 	}
 
-	public function run() {
+	/**
+	 * Collect extension data.
+	 * @return array[] JSON-able data array, keyed by extension name
+	 */
+	public function collect() {
 		$collector = new JsonCollector( $this->extensionDirs );
+		$collector->setLogger( $this->logger );
+		return $collector->collect();
+	}
+
+	public function run() {
 		$luaSerializer = new LuaSerializer();
 		$jsonSerializer = new JsonSerializer();
-		$collector->setLogger( $this->logger );
 		$luaSerializer->setLogger( $this->logger );
 		$jsonSerializer->setLogger( $this->logger );
 
-		$data = $collector->collect();
+		$data = $this->collect();
 
 		// Save JSON to public_html.
 		$jsonSerializer->serialize( $data, __DIR__ . '/../public_html/ExtensionJson.json' );

@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use MediaWiki\Tools\ExtensionJsonUploader\Command\DumpCommand;
 use MediaWiki\Tools\ExtensionJsonUploader\Command\UpdateCommand;
 use MediaWiki\Tools\ExtensionJsonUploader\Command\UploadCommand;
 use Symfony\Component\Console\Application;
@@ -14,6 +15,7 @@ set_time_limit(0);
 require dirname(__DIR__).'/vendor/autoload.php';
 
 $application = new Application();
+$application->add(new DumpCommand());
 $application->add(new UpdateCommand());
 $application->add(new UploadCommand());
 $application->run();
