@@ -5,7 +5,7 @@ Installation: after checkout, run `composer install`, then copy `config.dist.php
 to `config.php` and edit it. Check out the [mediawiki/extensions][2] repository
 to the configured location, and make sure it's kept up to date.
 
-Running: just run `run.php`.
+Running: just run `bin/extjsonuploader`.
 
 Development: run tests with `composer test`. Submit patches to
 [labs/tools/extjsonuploader][3].
