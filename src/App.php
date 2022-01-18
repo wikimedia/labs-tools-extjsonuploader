@@ -72,6 +72,7 @@ class App implements LoggerAwareInterface {
 		$lua = Validator::cleanUp( $lua );
 
 		$wiki = new Wikimate( $this->apiUrl );
+		$wiki->setUserAgent( 'toolforge/extjsonuploader' );
 		$res = $wiki->login( $this->wikiUser, $this->wikiPass );
 		if ( !$res ) {
 			$this->logger->error( 'Could not log in' );
