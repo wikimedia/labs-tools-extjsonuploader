@@ -46,7 +46,9 @@ class JsonCollector implements LoggerAwareInterface {
 				$ext['AutoloadNamespaces'],
 				$ext['MessagesDirs'],
 				$ext['ResourceFileModulePaths'],
-				$ext['ResourceModules']
+				$ext['ResourceModules'],
+				$ext['load_composer_autoloader'],
+				$ext['manifest_version']
 			);
 
 			// Add Git repository URL from Composer or the Git remote definition.
@@ -56,6 +58,9 @@ class JsonCollector implements LoggerAwareInterface {
 				$composer = json_decode( $composerContents, true );
 				if ( isset( $composer['support']['source'] ) ) {
 					$ext['repository'] = $composer['support']['source'];
+				}
+				if ( isset( $composer['name'] ) ) {
+					$ext['composer'] = $composer['name'];
 				}
 			}
 			if ( !isset( $ext['repository'] ) ) {
