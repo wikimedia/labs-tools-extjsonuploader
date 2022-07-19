@@ -33,6 +33,7 @@ class JsonCollector implements LoggerAwareInterface {
 	 */
 	public function collect() {
 		$overall = [];
+		$dupeNames = [];
 		foreach ( $this->getFiles() as $file ) {
 			$filetext = file_get_contents( $file );
 			$ext = json_decode( $filetext, true );
@@ -75,8 +76,12 @@ class JsonCollector implements LoggerAwareInterface {
 				$this->logger->error( "$file has no name" );
 				continue;
 			}
-			if ( isset( $overall[$name] ) ) {
-				$this->logger->error( "$file has duplicate name $name" );
+			// Keep track of seen extension names.
+			$dupeNames[$name] = isset( $dupeNames[$name] ) ? $dupeNames[$name] : [];
+			$dupeNames[$name][] = $file;
+			if ( isset( $overall[ $name ] ) ) {
+				$fileList = '  - ' . implode( "\n  - ", $dupeNames[ $name ] );
+				$this->logger->error( "Duplicate extension name '$name' detected in these files:\n" . $fileList );
 			}
 			$overall[$name] = $ext;
 		}
