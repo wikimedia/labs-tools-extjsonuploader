@@ -44,7 +44,9 @@ class JsonCollector implements LoggerAwareInterface {
 			// Keep size down under the 2MB limit of mediawiki.org
 			unset(
 				$ext['AutoloadClasses'],
+				$ext['TestAutoloadClasses'],
 				$ext['AutoloadNamespaces'],
+				$ext['TestAutoloadNamespaces'],
 				$ext['MessagesDirs'],
 				$ext['ResourceFileModulePaths'],
 				$ext['ResourceModules'],
