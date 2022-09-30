@@ -71,18 +71,21 @@ class App implements LoggerAwareInterface {
 		$lua = $luaSerializer->serialize( $data );
 		$lua = Validator::cleanUp( $lua );
 
+		file_put_contents( __DIR__ . '/../public_html/extension.lua', $lua );
+
 		$wiki = new Wikimate( $this->apiUrl );
 		$wiki->setUserAgent( 'toolforge/extjsonuploader' );
 		$res = $wiki->login( $this->wikiUser, $this->wikiPass );
 		if ( !$res ) {
 			$this->logger->error( 'Could not log in' );
-			die();
+			exit( 1 );
 		}
 
 		$page = $wiki->getPage( 'Module:ExtensionJson' );
 		$saved = $page->setText( $lua, null, false, 'Resyncing with extension.json from git' );
 		if ( !$saved ) {
 			$this->logger->error( 'Error when saving: ' . $page->getError()['info'] );
+			exit( 1 );
 		}
 	}
 

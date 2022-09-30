@@ -13,6 +13,13 @@ class LuaSerializer implements LoggerAwareInterface {
 
 	use LoggerAwareTrait;
 
+	private const RESERVED = [
+		'and', 'break', 'do', 'else', 'elseif',
+		'end', 'false', 'for', 'function', 'if',
+		'in', 'local', 'nil', 'not', 'or',
+		'repeat', 'return', 'then', 'true', 'until', 'while'
+	];
+
 	public function __construct() {
 		$this->logger = new NullLogger();
 	}
@@ -25,6 +32,24 @@ class LuaSerializer implements LoggerAwareInterface {
 	 */
 	public function serialize( array $stuff ) {
 		return 'return ' . $this->convertToLua( $stuff );
+	}
+
+	/**
+	 * Convert to an unquoted name if possible, otherwise do normal string.
+	 *
+	 * @param string $stuff
+	 * @return bool
+	 */
+	private function convertToLuaIdentifier( $stuff ) {
+		if (
+			is_string( $stuff ) &&
+			preg_match( "/^[a-zA-Z][a-zA-Z0-9_]*$/", $stuff ) &&
+			!in_array( $stuff, self::RESERVED )
+		) {
+			return $stuff;
+		} else {
+			return '[' . $this->convertToLua( $stuff ) . ']';
+		}
 	}
 
 	/**
@@ -50,11 +75,25 @@ class LuaSerializer implements LoggerAwareInterface {
 
 		if ( is_array( $stuff ) ) {
 			$out = "{\n";
-			foreach ( $stuff as $key => $value ) {
-				$out .= str_repeat( "\t", $level );
-				$out .= '[' . $this->convertToLua( $key ) . '] = ' . $this->convertToLua( $value, $level + 1 ) . ",\n";
+			// Bit hacky, try and figure out if it is numeric array.
+			if ( isset( $stuff[0] ) && isset( $stuff[count( $stuff ) - 1] ) ) {
+				foreach ( $stuff as $value ) {
+					$out .= $this->convertToLua( $value ) . ',';
+				}
+			} else {
+				foreach ( $stuff as $key => $value ) {
+					// $out .= str_repeat( "\t", $level );
+					if ( is_int( $key ) ) {
+						// lua is 1-based.
+						$key++;
+					}
+					$out .= $this->convertToLuaIdentifier( $key ) . '='
+						. $this->convertToLua( $value, $level + 1 ) . ",\n";
+				}
 			}
-			$out .= str_repeat( "\t", $level - 1 ) . "}";
+			// We are running out of space, don't pretty print.
+			// $out .= str_repeat( "\t", $level - 1 );
+			$out .= "}";
 			return $out;
 		}
 		$this->logger->error( "$stuff is invalid type" );

@@ -12,7 +12,7 @@ class LuaSerializerTest extends TestCase {
 	 */
 	public function testSerialize() {
 		$serializer = new LuaSerializer();
-		$this->assertSame( "return {\n\t[\"a\"] = \"b\",\n}", $serializer->serialize( [ 'a' => 'b' ] ) );
+		$this->assertSame( "return {\na=\"b\",\n}", $serializer->serialize( [ 'a' => 'b' ] ) );
 	}
 
 	/**
@@ -34,8 +34,9 @@ class LuaSerializerTest extends TestCase {
 			[ true, 'true' ],
 			[ false, 'false' ],
 			[ null, 'nil' ],
-			[ [ 'a' => 'b' ], "{\n\t[\"a\"] = \"b\",\n}" ],
-			[ [ 'a' => 'b', 'c' => [ 'd' => 0 ] ], "{\n\t[\"a\"] = \"b\",\n\t[\"c\"] = {\n\t\t[\"d\"] = 0,\n\t},\n}" ],
+			[ [ 'a' => 'b' ], "{\na=\"b\",\n}" ],
+			[ [ 'a' => 'b', 'c' => [ 'd' => 0 ] ], "{\na=\"b\",\nc={\nd=0,\n},\n}" ],
+			[ [ 'if' => 1 ], "{\n[\"if\"]=1,\n}" ]
 		];
 	}
 
