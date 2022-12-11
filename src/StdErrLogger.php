@@ -3,6 +3,7 @@
 namespace MediaWiki\Tools\ExtensionJsonUploader;
 
 use Psr\Log\AbstractLogger;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * Simple PSR-3 logger that uses stderr.
@@ -22,7 +23,9 @@ class StdErrLogger extends AbstractLogger {
 		if ( !$this->fh ) {
 			$this->open();
 		}
-		fwrite( $this->fh, $message . "\n" );
+		$time = ConvertibleTimestamp::now( TS_POSTGRES );
+		$prefix = "[$time]";
+		fwrite( $this->fh, "$prefix $message\n" );
 	}
 
 	private function open() {

@@ -7,6 +7,7 @@ use MediaWiki\Tools\ExtensionJsonUploader\StdErrLogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class UploadCommand extends Command {
 
@@ -33,7 +34,10 @@ class UploadCommand extends Command {
 			$app->setApiUrl( $config['apiUrl'] );
 		}
 
+		$time = ConvertibleTimestamp::now( TS_POSTGRES );
+		$output->writeln( "[$time] Starting upload..." );
 		$app->run();
+		$output->writeln( "...done." );
 
 		return Command::SUCCESS;
 	}
