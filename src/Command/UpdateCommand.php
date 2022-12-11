@@ -43,6 +43,11 @@ class UpdateCommand extends Command {
 			$process->setWorkingDirectory( $extensionDir );
 			$process->setTimeout( null );
 			$process->mustRun();
+
+			$process = new Process( [ 'git', 'clean', '--quiet', '-d', '-ff' ] );
+			$process->setWorkingDirectory( $extensionDir );
+			$process->setTimeout( null );
+			$process->mustRun();
 		}
 		return Command::SUCCESS;
 	}
