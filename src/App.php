@@ -73,7 +73,7 @@ class App implements LoggerAwareInterface {
 
 		file_put_contents( __DIR__ . '/../public_html/extension.lua', $lua );
 
-		$wiki = new Wikimate( $this->apiUrl );
+		$wiki = new Wikimate( $this->apiUrl, [], [], [ 'timeout' => 30 ] );
 		$wiki->setUserAgent( 'toolforge/extjsonuploader' );
 		$res = $wiki->login( $this->wikiUser, $this->wikiPass );
 		if ( !$res ) {
