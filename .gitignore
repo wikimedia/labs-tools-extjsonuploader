@@ -8,4 +8,5 @@ out/
 allext
 
 public_html/ExtensionJson.json
+public_html/extension.lua
 tests/phpunit/test.json
