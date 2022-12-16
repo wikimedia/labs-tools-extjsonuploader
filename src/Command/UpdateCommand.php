@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class UpdateCommand extends Command {
 
@@ -23,6 +24,8 @@ class UpdateCommand extends Command {
 	protected function execute( InputInterface $input, OutputInterface $output ) {
 		$config = require dirname( __DIR__, 2 ) . '/config.php';
 		$extensionDirs = $config['extensionDirs'] ?? [];
+		$time = ConvertibleTimestamp::now( TS_POSTGRES );
+		$output->writeln( "[$time] Starting update..." );
 		foreach ( $extensionDirs as $extensionDir ) {
 			if ( !is_dir( $extensionDir ) ) {
 				throw new RuntimeException( 'Directory not found: ' . $extensionDir );
@@ -49,6 +52,8 @@ class UpdateCommand extends Command {
 			$process->setTimeout( null );
 			$process->mustRun();
 		}
+		$time = ConvertibleTimestamp::now( TS_POSTGRES );
+		$output->writeln( "[$time] ...update finished." );
 		return Command::SUCCESS;
 	}
 }
