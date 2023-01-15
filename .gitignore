@@ -9,4 +9,7 @@ allext
 
 public_html/ExtensionJson.json
 public_html/extension.lua
+public_html/wikiapiary-skins.json
+public_html/wikiapiary-extensions.json
+public_html/ExtensionPopularity.json
 tests/phpunit/test.json

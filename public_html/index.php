@@ -24,6 +24,15 @@
 		<a href="./ExtensionJson.json">ExtensionJson.json</a>
 		(<?php echo round( filesize( 'ExtensionJson.json' ) / 1024 / 1024, 2 ) ?> MB)
 	</li>
+	<li>
+		Popularity data: <a href="https://www.mediawiki.org/wiki/Template:Extension/popularity.json">
+		Template:Extension/popularity.json</a>.
+	</li>
+	<li>
+		Miscellaneous files: <a href="./ExtensionPopularity.json">ExtensionPopularity.json</a>,
+		<a href="./wikiapiary-extensions.json">wikiapiary-extensions.json</a>,
+		<a href="./wikiapiary-skins.json">wikiapiary-skins.json</a>, <a href="extension.lua">extension.lua</a>.
+	</li>
 </ul>
 <p>
 	For more information,
