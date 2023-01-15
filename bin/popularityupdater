@@ -11,6 +11,8 @@ if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
 }
 
 set_time_limit(0);
+// toolforge has a default of 1 second which is way too short.
+ini_set( 'default_socket_timeout', 90 );
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
