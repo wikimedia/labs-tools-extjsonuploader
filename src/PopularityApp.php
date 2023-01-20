@@ -47,7 +47,10 @@ class PopularityApp implements LoggerAwareInterface {
 	 */
 	private function getGraphiteStats( string $type, string $period ): array {
 		// We get a timeout if we do it all at once.
-		$segments = [ "[0-A]", "[B-C]", "[D-H]", "[I-M]", "[N-Q]", "[R-V]", "[W-Y]", "[Z-z]" ];
+		$segments = [
+			"[0-A]", "[B-C]", "[D-E]", "[F-H]", "[I-M]",
+			"[N-Q]", "[R-S]", "[T-V]", "[W-Y]", "[Z-z]"
+		];
 
 		$combinedData = [];
 		foreach ( $segments as $seg ) {
@@ -57,7 +60,16 @@ class PopularityApp implements LoggerAwareInterface {
 
 			// Hopefully fopen is enabled.
 			$context = stream_context_create( [ 'http' => [ 'user_agent' => 'toolforge/extjsonuploader' ] ] );
-			$json = file_get_contents( $url, false, $context );
+			$json = false;
+			for ( $i = 0; $i < 5; $i++ ) {
+				$json = file_get_contents( $url, false, $context );
+				if ( $json ) {
+					break;
+				}
+				// Sometimes we hit a timeout. Retry.
+				sleep( 4 );
+
+			}
 			if ( !$json ) {
 				$this->logger->error( "Could not download $url" );
 				exit( 1 );
