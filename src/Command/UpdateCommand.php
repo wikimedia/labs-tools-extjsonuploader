@@ -42,6 +42,11 @@ class UpdateCommand extends Command {
 			$process->setTimeout( null );
 			$process->mustRun();
 
+			$process = new Process( [ 'git', 'submodule', 'sync' ] );
+			$process->setWorkingDirectory( $extensionDir );
+			$process->setTimeout( null );
+			$process->mustRun();
+
 			$process = new Process( [ 'git', 'submodule', '--quiet', 'update', '--init', '--depth', '1' ] );
 			$process->setWorkingDirectory( $extensionDir );
 			$process->setTimeout( null );
