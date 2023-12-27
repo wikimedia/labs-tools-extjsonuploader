@@ -2,9 +2,6 @@ vendor/
 .phpunit.result.cache
 
 config.php
-clone.out
-clone.err
-out/
 allext
 
 public_html/ExtensionJson.json
