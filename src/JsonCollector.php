@@ -62,7 +62,7 @@ class JsonCollector implements LoggerAwareInterface {
 				if ( isset( $composer['support']['source'] ) ) {
 					$ext['repository'] = $composer['support']['source'];
 				}
-				if ( isset( $composer['name'] ) ) {
+				if ( isset( $composer['name'] ) && $this->checkComposerName( $composerJson, $composer['name'] ) ) {
 					$ext['composer'] = $composer['name'];
 				}
 			}
@@ -88,6 +88,28 @@ class JsonCollector implements LoggerAwareInterface {
 			$overall[$name] = $ext;
 		}
 		return $overall;
+	}
+
+	/**
+	 * Check whether the given Composer name is valid on packagist.org
+	 * and log an error if it is not.
+	 *
+	 * @param string $composerJson The full filesystem path to composer.json.
+	 * @param string $name The name given in composer.json.
+	 * @return bool
+	 */
+	private function checkComposerName( string $composerJson, string $name ): bool {
+		if ( trim( $name ) === '' ) {
+			return true;
+		}
+		$process = new Process( [ 'composer', 'show', '-a', $name ] );
+		$process->setWorkingDirectory( dirname( $composerJson ) );
+		$isValid = $process->isSuccessful();
+		if ( !$isValid ) {
+			$extDir = basename( dirname( $composerJson ) );
+			$this->logger->error( "$extDir: Composer name '$name' not found on Packagist." );
+		}
+		return $isValid;
 	}
 
 	/**
