@@ -104,6 +104,7 @@ class JsonCollector implements LoggerAwareInterface {
 		}
 		$process = new Process( [ 'composer', 'show', '-a', $name ] );
 		$process->setWorkingDirectory( dirname( $composerJson ) );
+		$process->run();
 		$isValid = $process->isSuccessful();
 		if ( !$isValid ) {
 			$extDir = basename( dirname( $composerJson ) );
