@@ -25,6 +25,9 @@
 		(<?php echo round( filesize( 'ExtensionJson.json' ) / 1024 / 1024, 2 ) ?> MB)
 	</li>
 	<li>
+		Separate JSON file: <a href="./per_extension/">/per_extension/*</a>
+	</li>
+	<li>
 		Popularity data: <a href="https://www.mediawiki.org/wiki/Template:Extension/popularity.json">
 		Template:Extension/popularity.json</a>.
 	</li>

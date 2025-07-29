@@ -81,10 +81,31 @@ class App implements LoggerAwareInterface {
 			exit( 1 );
 		}
 
-		$page = $wiki->getPage( 'Module:ExtensionJson' );
-		$saved = $page->setText( $lua, null, false, 'Resyncing with extension.json from git' );
-		if ( !$saved ) {
-			$this->logger->error( 'Error when saving: ' . $page->getError()['info'] );
+		$errors = false;
+		foreach ( $data as $ext => $extData ) {
+			if ( strpos( $ext, '/' ) !== false ) {
+				// paranoia
+				$this->logger->error( "$ext contains slash" );
+				continue;
+			}
+			$page = $wiki->getPage( 'Module:ExtensionJson/' . $ext . '.json' );
+			// Put data under a key with branch name, to make it easier to extend in
+			// the future where we might want data from different branches.
+			$extJsonData = [ 'master' => $extData ];
+			$path = __DIR__ . '/../public_html/per_extension/' . $ext . '.json';
+			$jsonSerializer->serialize( $extJsonData, $path );
+			$saved = $page->setText(
+				file_get_contents( $path ),
+				null,
+				false,
+				'Resyncing with extension.json from git'
+			);
+			if ( !$saved ) {
+				$this->logger->error( "Error when saving $ext: " . $page->getError()['info'] );
+				$errors = true;
+			}
+		}
+		if ( $errors ) {
 			exit( 1 );
 		}
 	}
