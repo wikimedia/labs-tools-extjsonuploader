@@ -59,7 +59,7 @@ class PopularityApp implements LoggerAwareInterface {
 				".*.sum,%22$period%22,%22sum%22,true),3,%22sum%22))&format=json&from=-$period&until=now";
 
 			// Hopefully fopen is enabled.
-			$context = stream_context_create( [ 'http' => [ 'user_agent' => 'toolforge/extjsonuploader' ] ] );
+			$context = stream_context_create( [ 'http' => [ 'user_agent' => App::USER_AGENT ] ] );
 			$json = false;
 			for ( $i = 0; $i < 5; $i++ ) {
 				$json = file_get_contents( $url, false, $context );
@@ -149,7 +149,7 @@ class PopularityApp implements LoggerAwareInterface {
 	 * @param string $type Either "extensions' or 'skins'
 	 */
 	private function fetchWikiapiary( array &$stats, string $url, string $type ) {
-		$context = stream_context_create( [ 'http' => [ 'user_agent' => 'toolforge/extjsonuploader' ] ] );
+		$context = stream_context_create( [ 'http' => [ 'user_agent' => App::USER_AGENT ] ] );
 		$json = file_get_contents( $url, false, $context );
 		if ( !$json ) {
 			$this->logger->error( "Could not fetch wikiapiary $url" );
@@ -217,7 +217,7 @@ class PopularityApp implements LoggerAwareInterface {
 		$jsonSerializer->serialize( $stats, __DIR__ . '/../public_html/ExtensionPopularity.json' );
 
 		$wiki = new Wikimate( $this->apiUrl, [], [], [ 'timeout' => 30 ] );
-		$wiki->setUserAgent( 'toolforge/extjsonuploader' );
+		$wiki->setUserAgent( App::USER_AGENT );
 		$res = $wiki->login( $this->wikiUser, $this->wikiPass );
 		if ( !$res ) {
 			$this->logger->error( 'Could not log in' );

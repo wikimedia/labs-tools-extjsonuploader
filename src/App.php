@@ -15,6 +15,9 @@ class App implements LoggerAwareInterface {
 
 	use LoggerAwareTrait;
 
+	public const USER_AGENT = 'toolforge/extjsonuploader '
+		. '(https://wikitech.wikimedia.org/wiki/Tool:Extjsonuploader)';
+
 	/** @var string[] Directory where the mediawiki/extensions repo is checked out */
 	private $extensionDirs;
 
@@ -74,7 +77,7 @@ class App implements LoggerAwareInterface {
 		file_put_contents( __DIR__ . '/../public_html/extension.lua', $lua );
 
 		$wiki = new Wikimate( $this->apiUrl, [], [], [ 'timeout' => 30 ] );
-		$wiki->setUserAgent( 'toolforge/extjsonuploader' );
+		$wiki->setUserAgent( self::USER_AGENT );
 		$res = $wiki->login( $this->wikiUser, $this->wikiPass );
 		if ( !$res ) {
 			$this->logger->error( 'Could not log in' );
